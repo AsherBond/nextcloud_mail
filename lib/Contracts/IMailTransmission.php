@@ -43,6 +43,12 @@ interface IMailTransmission {
 	 */
 	public function sendMessage(Account $account, LocalMessage $message): void;
 
+	/**
+	 * @param Account $account
+	 * @param LocalMessage $localMessage
+	 * @return void
+	 */
+	public function copySentMessage(Account $account, LocalMessage $localMessage): void;
 
 	/**
 	 * @param Account $account

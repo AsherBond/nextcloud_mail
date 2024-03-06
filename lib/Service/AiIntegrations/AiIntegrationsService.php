@@ -176,7 +176,7 @@ PROMPT;
 			throw new ServiceException('Text processing is not available in your current Nextcloud version', 0, $e);
 		}
 		if (in_array(FreePromptTaskType::class, $manager->getAvailableTaskTypes(), true)) {
-			$cachedReplies = $this->cache->getValue('smartReplies_'.$message->getUid());
+			$cachedReplies = $this->cache->getValue('smartReplies_'.$message->getId());
 			if ($cachedReplies) {
 				return json_decode($cachedReplies, true);
 			}
@@ -213,7 +213,7 @@ PROMPT;
 			$task = new Task(FreePromptTaskType::class, $prompt, 'mail,', $currentUserId);
 			$manager->runTask($task);
 			$replies = $task->getOutput();
-			$this->cache->addValue('smartReplies_'.$message->getUid(), $replies);
+			$this->cache->addValue('smartReplies_'.$message->getId(), $replies);
 			return json_decode($replies, true);
 			
 		} else {

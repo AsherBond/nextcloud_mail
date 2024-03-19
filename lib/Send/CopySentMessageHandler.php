@@ -38,7 +38,6 @@ class CopySentMessageHandler extends AHandler {
 		private LoggerInterface $logger,
 		private MessageMapper $messageMapper
 	) {
-		parent::__construct();
 	}
 	public function process(Account $account, LocalMessage $localMessage): LocalMessage {
 		if ($localMessage->getStatus() === LocalMessage::STATUS_PROCESSED) {

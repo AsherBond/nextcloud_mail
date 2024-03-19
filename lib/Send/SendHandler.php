@@ -29,7 +29,6 @@ use OCA\Mail\Db\LocalMessage;
 class SendHandler extends AHandler {
 	public function __construct(private IMailTransmission $transmission,
 	) {
-		parent::__construct();
 	}
 
 	public function process(Account $account, LocalMessage $localMessage): LocalMessage {

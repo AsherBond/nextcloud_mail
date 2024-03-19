@@ -27,10 +27,6 @@ use OCA\Mail\Db\LocalMessage;
 abstract class AHandler {
 
 	protected AHandler|null $next = null;
-
-	public function __construct() {
-	}
-
 	public function setNext(AHandler $next): AHandler {
 		$this->next = $next;
 		return $next;

@@ -81,6 +81,7 @@ class DraftsController extends Controller {
 	 * @param int|null $smimeCertificateId
 	 * @param int|null $sendAt
 	 * @param int|null $draftId
+	 * @param bool $requestMdn
 	 *
 	 * @return JsonResponse
 	 * @throws DoesNotExistException
@@ -99,6 +100,7 @@ class DraftsController extends Controller {
 		array   $cc = [],
 		array   $bcc = [],
 		array   $attachments = [],
+		bool $requestMdn,
 		?int    $aliasId = null,
 		?string $inReplyToMessageId = null,
 		?int $smimeCertificateId = null,
@@ -121,6 +123,7 @@ class DraftsController extends Controller {
 		$message->setSendAt($sendAt);
 		$message->setSmimeSign($smimeSign);
 		$message->setSmimeEncrypt($smimeEncrypt);
+		$message->setRequestMdn($requestMdn);
 
 		if (!empty($smimeCertificateId)) {
 			$smimeCertificate = $this->smimeService->findCertificate($smimeCertificateId, $this->userId);
@@ -141,7 +144,6 @@ class DraftsController extends Controller {
 	 * @param string $body
 	 * @param string $editorBody
 	 * @param bool $isHtml
-	 * @param bool $failed
 	 * @param array<int, string[]> $to i. e. [['label' => 'Linus', 'email' => 'tent@stardewvalley.com'], ['label' => 'Pierre', 'email' => 'generalstore@stardewvalley.com']]
 	 * @param array<int, string[]> $cc
 	 * @param array<int, string[]> $bcc
@@ -149,6 +151,7 @@ class DraftsController extends Controller {
 	 * @param int|null $aliasId
 	 * @param string|null $inReplyToMessageId
 	 * @param int|null $sendAt
+	 * @param bool $requestMdn
 	 * @return JsonResponse
 	 */
 	#[TrapError]
@@ -160,18 +163,17 @@ class DraftsController extends Controller {
 		bool    $isHtml,
 		?bool $smimeSign,
 		?bool $smimeEncrypt,
-		bool    $failed = false,
 		array   $to = [],
 		array   $cc = [],
 		array   $bcc = [],
 		array   $attachments = [],
+		bool $requestMdn,
 		?int    $aliasId = null,
 		?string $inReplyToMessageId = null,
 		?int $smimeCertificateId = null,
 		?int $sendAt = null): JsonResponse {
 		$message = $this->service->getMessage($id, $this->userId);
 		$account = $this->accountService->find($this->userId, $accountId);
-
 
 		$message->setType(LocalMessage::TYPE_DRAFT);
 		$message->setAccountId($accountId);
@@ -180,12 +182,12 @@ class DraftsController extends Controller {
 		$message->setBody($body);
 		$message->setEditorBody($editorBody);
 		$message->setHtml($isHtml);
-		$message->setFailed($failed);
 		$message->setInReplyToMessageId($inReplyToMessageId);
 		$message->setSendAt($sendAt);
 		$message->setUpdatedAt($this->timeFactory->getTime());
 		$message->setSmimeSign($smimeSign);
 		$message->setSmimeEncrypt($smimeEncrypt);
+		$message->setRequestMdn($requestMdn);
 
 		if (!empty($smimeCertificateId)) {
 			$smimeCertificate = $this->smimeService->findCertificate($smimeCertificateId, $this->userId);

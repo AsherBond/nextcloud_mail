@@ -97,6 +97,7 @@ class OutboxController extends Controller {
 	 * @param int|null $aliasId
 	 * @param string|null $inReplyToMessageId
 	 * @param int|null $sendAt
+	 * @param bool $requestMdn
 	 *
 	 * @return JsonResponse
 	 * @throws DoesNotExistException
@@ -115,6 +116,7 @@ class OutboxController extends Controller {
 		array $cc = [],
 		array $bcc = [],
 		array $attachments = [],
+		bool $requestMdn,
 		?int $draftId = null,
 		?int $aliasId = null,
 		?string $inReplyToMessageId = null,
@@ -139,6 +141,7 @@ class OutboxController extends Controller {
 		$message->setSendAt($sendAt);
 		$message->setSmimeSign($smimeSign);
 		$message->setSmimeEncrypt($smimeEncrypt);
+		$message->setRequestMdn($requestMdn);
 
 		if (!empty($smimeCertificateId)) {
 			$smimeCertificate = $this->smimeService->findCertificate($smimeCertificateId, $this->userId);
@@ -178,7 +181,6 @@ class OutboxController extends Controller {
 	 * @param string $body
 	 * @param string $editorBody
 	 * @param bool $isHtml
-	 * @param bool $failed
 	 * @param array $to i. e. [['label' => 'Linus', 'email' => 'tent@stardewvalley.com'], ['label' => 'Pierre', 'email' => 'generalstore@stardewvalley.com']]
 	 * @param array $cc
 	 * @param array $bcc
@@ -186,6 +188,8 @@ class OutboxController extends Controller {
 	 * @param int|null $aliasId
 	 * @param string|null $inReplyToMessageId
 	 * @param int|null $sendAt
+	 * @param bool $requestMdn
+	 *
 	 * @return JsonResponse
 	 */
 	#[TrapError]
@@ -198,11 +202,11 @@ class OutboxController extends Controller {
 		bool $isHtml,
 		bool $smimeSign,
 		bool $smimeEncrypt,
-		bool $failed = false,
 		array $to = [],
 		array $cc = [],
 		array $bcc = [],
 		array $attachments = [],
+		bool $requestMdn,
 		?int $aliasId = null,
 		?string $inReplyToMessageId = null,
 		?int $smimeCertificateId = null,

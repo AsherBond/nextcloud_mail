@@ -25,7 +25,6 @@ namespace OCA\Mail\Send;
 use OCA\Mail\Account;
 use OCA\Mail\Db\LocalMessage;
 use OCA\Mail\Db\LocalMessageMapper;
-use OCA\Mail\Db\MessageMapper;
 use OCA\Mail\Service\Attachment\AttachmentService;
 
 class Chain {
@@ -34,7 +33,6 @@ class Chain {
 		private SendHandler $sendHandler,
 		private CopySentMessageHandler $copySentMessageHandler,
 		private FlagRepliedMessageHandler $flagRepliedMessageHandler,
-		private MessageMapper $messageMapper,
 		private AttachmentService $attachmentService,
 		private LocalMessageMapper $localMessageMapper,
 	) {
@@ -53,6 +51,6 @@ class Chain {
 			$this->localMessageMapper->deleteWithRecipients($result);
 			return;
 		}
-		$this->messageMapper->update($result);
+		$this->localMessageMapper->update($result);
 	}
 }

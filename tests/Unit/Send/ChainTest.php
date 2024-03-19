@@ -55,7 +55,6 @@ class ChainTest extends TestCase {
 		$this->sendHandler = $this->createMock(SendHandler::class);
 		$this->copySentMessageHandler = $this->createMock(CopySentMessageHandler::class);
 		$this->flagRepliedMessageHandler = $this->createMock(FlagRepliedMessageHandler::class);
-		$this->messageMapper = $this->createMock(MessageMapper::class);
 		$this->attachmentService = $this->createMock(AttachmentService::class);
 		$this->localMessageMapper = $this->createMock(LocalMessageMapper::class);
 		$this->chain = new Chain($this->sentMailboxHandler,
@@ -63,7 +62,6 @@ class ChainTest extends TestCase {
 			$this->sendHandler,
 			$this->copySentMessageHandler,
 			$this->flagRepliedMessageHandler,
-			$this->messageMapper,
 			$this->attachmentService,
 			$this->localMessageMapper,
 		);
@@ -100,7 +98,7 @@ class ChainTest extends TestCase {
 		$this->localMessageMapper->expects(self::once())
 			->method('deleteWithRecipients')
 			->with($expected);
-		$this->messageMapper->expects(self::never())
+		$this->localMessageMapper->expects(self::never())
 			->method('update');
 
 		$this->chain->process($account, $localMessage);
@@ -135,7 +133,7 @@ class ChainTest extends TestCase {
 			->method('deleteLocalMessageAttachments');
 		$this->localMessageMapper->expects(self::never())
 			->method('deleteWithRecipients');
-		$this->messageMapper->expects(self::once())
+		$this->localMessageMapper->expects(self::once())
 			->method('update')
 			->with($expected);
 

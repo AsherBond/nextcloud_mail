@@ -94,7 +94,7 @@ class MailTransmission implements IMailTransmission {
 		$attachmentParts = [];
 		foreach ($attachments as $attachment) {
 			$part = $this->transmissionService->handleAttachment($account, $attachment);
-			if($part !== null) {
+			if ($part !== null) {
 				$attachmentParts[] = $part;
 			}
 		}

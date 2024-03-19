@@ -111,7 +111,7 @@ class AntiAbuseService {
 			$this->checkRateLimitsForPeriod($user, $cache, '1h', 60 * 60, $message) ||
 			$this->checkRateLimitsForPeriod($user, $cache, '1d', 24 * 60 * 60, $message)
 		);
-		if($ratelimited) {
+		if ($ratelimited) {
 			$message->setStatus(LocalMessage::STATUS_RATELIMIT);
 		}
 	}

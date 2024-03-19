@@ -138,11 +138,13 @@ class OutboxService {
 	 * @param LocalMessage $message
 	 * @param Account $account
 	 * @return void
-	 * @throws SentMailboxNotSetException
 	 * @throws ServiceException
 	 */
 	public function sendMessage(LocalMessage $message, Account $account): void {
 		$this->sendChain->process($account, $message);
+		if($message->getStatus() !== LocalMessage::STATUS_PROCESSED) {
+			throw new ServiceException('Could not send message');
+		}
 	}
 
 	/**

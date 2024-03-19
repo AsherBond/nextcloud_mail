@@ -33,14 +33,14 @@ class SendHandler extends AHandler {
 	}
 
 	public function process(Account $account, LocalMessage $localMessage): LocalMessage {
-		if($localMessage->getStatus() === LocalMessage::STATUS_IMAP_SENT_MAILBOX_FAIL
+		if ($localMessage->getStatus() === LocalMessage::STATUS_IMAP_SENT_MAILBOX_FAIL
 			|| $localMessage->getStatus() === LocalMessage::STATUS_PROCESSED) {
 			return $this->processNext($account, $localMessage);
 		}
 
 		$this->transmission->sendMessage($account, $localMessage);
 		// Something went wrong during the sending
-		if($localMessage->getStatus() !== LocalMessage::STATUS_RAW) {
+		if ($localMessage->getStatus() !== LocalMessage::STATUS_RAW) {
 			return $localMessage;
 		}
 

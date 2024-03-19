@@ -33,7 +33,6 @@ use Psr\Log\LoggerInterface;
 
 class CopySentMessageHandler extends AHandler {
 
-
 	public function __construct(private IMAPClientFactory $imapClientFactory,
 		private MailboxMapper $mailboxMapper,
 		private LoggerInterface $logger,
@@ -42,7 +41,7 @@ class CopySentMessageHandler extends AHandler {
 		parent::__construct();
 	}
 	public function process(Account $account, LocalMessage $localMessage): LocalMessage {
-		if($localMessage->getStatus() === LocalMessage::STATUS_PROCESSED) {
+		if ($localMessage->getStatus() === LocalMessage::STATUS_PROCESSED) {
 			return $this->processNext($account, $localMessage);
 		}
 

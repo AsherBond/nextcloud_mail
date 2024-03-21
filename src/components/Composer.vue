@@ -1473,6 +1473,10 @@ export default {
 		}
 		.vs__search{
 			width: 100%;
+			padding: 0 !important;
+		}
+		.vs__search:focus{
+			padding: 0 !important;
 		}
 		.v-select{
 			flex-grow: 0.95;

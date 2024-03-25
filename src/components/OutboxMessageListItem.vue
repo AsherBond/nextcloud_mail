@@ -32,7 +32,7 @@
 		<template #subtitle>
 			{{ subjectForSubtitle }}
 		</template>
-		<template slot="actions">
+		<template slot="actions" v-if="message.status !== 11">
 			<ActionButton :close-after-click="true"
 				@click="sendMessageNow">
 				{{ t('mail', 'Send now') }}
@@ -97,7 +97,9 @@ export default {
 			return formatter.format(recipients)
 		},
 		details() {
-			if (this.message.failed) {
+			if (this.message.status === 11) {
+				return this.t('mail', 'Could not copy to sent mailbox')
+			} else if(this.message.status !== 0) {
 				return this.t('mail', 'Message could not be sent')
 			}
 			if (!this.message.sendAt) {
@@ -142,6 +144,9 @@ export default {
 			await this.$store.dispatch('outbox/sendMessageWithUndo', { id: message.id })
 		},
 		async openModal() {
+			if(this.message.status === 11) {
+				return
+			}
 			await this.$store.dispatch('startComposerSession', {
 				type: 'outbox',
 				data: {

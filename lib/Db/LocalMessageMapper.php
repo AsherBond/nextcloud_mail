@@ -65,7 +65,7 @@ class LocalMessageMapper extends QBMapper {
 			->where(
 				$qb->expr()->eq('a.user_id', $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR), IQueryBuilder::PARAM_STR),
 				$qb->expr()->eq('m.type', $qb->createNamedParameter($type, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT),
-				$qb->expr()->notIn('m.status', $qb->createNamedParameter([LocalMessage::STATUS_PROCESSED, LocalMessage::STATUS_IMAP_SENT_MAILBOX_FAIL], IQueryBuilder::PARAM_INT_ARRAY), IQueryBuilder::PARAM_INT_ARRAY)
+				$qb->expr()->neq('m.status', $qb->createNamedParameter(LocalMessage::STATUS_PROCESSED, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT)
 			);
 		$rows = $qb->executeQuery();
 

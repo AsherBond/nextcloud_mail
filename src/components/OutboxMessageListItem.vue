@@ -32,8 +32,10 @@
 		<template #subtitle>
 			{{ subjectForSubtitle }}
 		</template>
-		<template slot="actions" v-if="message.status !== 11">
-			<ActionButton :close-after-click="true"
+		<template slot="actions">
+			<ActionButton
+				v-if="message.status !== 11"
+				:close-after-click="true"
 				@click="sendMessageNow">
 				{{ t('mail', 'Send now') }}
 				<template #icon>
@@ -98,7 +100,7 @@ export default {
 		},
 		details() {
 			if (this.message.status === 11) {
-				return this.t('mail', 'Could not copy to sent mailbox')
+				return this.t('mail', 'Could not copy to "Sent" mailbox')
 			} else if(this.message.status !== 0) {
 				return this.t('mail', 'Message could not be sent')
 			}

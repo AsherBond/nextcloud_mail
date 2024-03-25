@@ -131,7 +131,7 @@ class MailTransmission implements IMailTransmission {
 			$mimePart = $this->transmissionService->getSignMimePart($localMessage, $account, $mimePart);
 			$mimePart = $this->transmissionService->getEncryptMimePart($localMessage, $to, $cc, $bcc, $account, $mimePart);
 		} catch (ServiceException $e) {
-			$this->logger->error($e);
+			$this->logger->error($e->getMessage(), ['exception' => $e]);
 			return;
 		}
 
@@ -143,7 +143,7 @@ class MailTransmission implements IMailTransmission {
 			$localMessage->setRaw($mail->getRaw(false));
 		} catch (Horde_Mime_Exception $e) {
 			$localMessage->setStatus(LocalMessage::STATUS_SMPT_SEND_FAIL);
-			$this->logger->error($e);
+			$this->logger->error($e->getMessage(), ['exception' => $e]);
 			return;
 		}
 

@@ -21,7 +21,9 @@
   -->
 
 <template>
-	<ListItem class="outbox-message"
+	<ListItem
+		v-if="message.status !== 11"
+		class="outbox-message"
 		:class="{ selected }"
 		:name="title"
 		:details="details"
@@ -34,17 +36,47 @@
 		</template>
 		<template slot="actions">
 			<ActionButton
-				v-if="message.status !== 11"
 				:close-after-click="true"
 				@click="sendMessageNow">
 				{{ t('mail', 'Send now') }}
 				<template #icon>
 					<Send :title="t('mail', 'Send now')"
-						:size="20" />
+						  :size="20" />
 				</template>
 			</ActionButton>
 			<ActionButton :close-after-click="true"
 				@click="deleteMessage">
+				<template #icon>
+					<IconDelete :size="20" />
+				</template>
+				{{ t('mail', 'Delete') }}
+			</ActionButton>
+		</template>
+	</ListItem>
+	<ListItem
+		v-else
+		class="outbox-message"
+		:name="title"
+		:class="{ selected }"
+		:details="details">
+		<template #icon>
+			<Avatar :display-name="avatarDisplayName" :email="avatarEmail" />
+		</template>
+		<template #subtitle>
+			{{ subjectForSubtitle }}
+		</template>
+		<template slot="actions">
+			<ActionButton
+				:close-after-click="true"
+				@click="sendMessageNow">
+				{{ t('mail', 'Copy to "Sent" Mailbox') }}
+				<template #icon>
+					<Send :title="t('mail', 'Copy to Sent Mailbox')"
+						  :size="20" />
+				</template>
+			</ActionButton>
+			<ActionButton :close-after-click="true"
+						  @click="deleteMessage">
 				<template #icon>
 					<IconDelete :size="20" />
 				</template>
@@ -143,7 +175,12 @@ export default {
 				sendAt: (new Date().getTime() + UNDO_DELAY) / 1000,
 			}
 			await this.$store.dispatch('outbox/updateMessage', { message, id: message.id })
-			await this.$store.dispatch('outbox/sendMessageWithUndo', { id: message.id })
+			if(this.message.status !== 11) {
+				await this.$store.dispatch('outbox/sendMessageWithUndo', { id: message.id })
+			} else {
+				await this.$store.dispatch('outbox/copyMessageToSentMailbox', { id: message.id })
+			}
+
 		},
 		async openModal() {
 			if(this.message.status === 11) {

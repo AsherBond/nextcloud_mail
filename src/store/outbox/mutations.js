@@ -40,6 +40,6 @@ export default {
 	},
 	updateMessage(state, { message }) {
 		const existing = state.messages[message.id]
-		Vue.set(state.messages, message.id, Object.assign({}, existing, message))
+		Vue.set(state.messages, message.id, Object.assign(existing, message))
 	},
 }

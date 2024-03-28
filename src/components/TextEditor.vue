@@ -413,6 +413,7 @@ https://github.com/ckeditor/ckeditor5/issues/1142
 	border-radius : 8px !important;
 	padding : 4px 8px !important;
 	display :block;
+	background:var(--color-main-background)!important;
  }
  .custom-item:hover {
 	background:var(--color-primary-element-light)!important;
@@ -422,12 +423,7 @@ https://github.com/ckeditor/ckeditor5/issues/1142
 	padding :4px 8px !important;
 	display : block;
 	width : 100% !important;
- }
- .ck-off{
 	background:var(--color-main-background)!important;
- }
- .ck-on{
-	background:var(--color-primary-element-light)!important;
  }
  .link-container:hover {
 	background:var(--color-primary-element-light)!important;
